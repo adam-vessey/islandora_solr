@@ -21,12 +21,14 @@ use Drupal\islandora\Controller\DefaultController as IslandoraController;
 class DefaultController extends ControllerBase {
 
   protected $renderer;
+  protected $container;
 
   /**
    * Constructor.
    */
-  public function __construct(RendererInterface $renderer) {
+  public function __construct(RendererInterface $renderer, ContainerInterface $container) {
     $this->renderer = $renderer;
+    $this->container = $container;
   }
 
   /**
@@ -34,7 +36,8 @@ class DefaultController extends ControllerBase {
    */
   public static function create(ContainerInterface $container) {
     return new static(
-      $container->get('renderer')
+      $container->get('renderer'),
+      $container
     );
   }
 
@@ -100,6 +103,7 @@ class DefaultController extends ControllerBase {
 
     // !!! Set the global variable. !!!
     $_islandora_solr_queryclass = new IslandoraSolrQueryProcessor();
+    $this->container->set('islandora_solr.page_query', $_islandora_solr_queryclass);
 
     // Build and execute Apache Solr query.
     $_islandora_solr_queryclass->buildAndExecuteQuery($query, $params);

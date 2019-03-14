@@ -1,0 +1,4 @@
+services:
+  islandora_solr.page_query:
+    class: Drupal\islandora_solr\IslandoraSolrQueryProcessor
+    synthetic: true
